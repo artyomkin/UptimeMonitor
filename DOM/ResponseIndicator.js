@@ -18,5 +18,9 @@ export class ResponseIndicator{
         this.responseCode = responseCode;
     }
     
+    setExternalResource(externalResource){
+        this.externalResource = externalResource;
+    }
+    
 }
 

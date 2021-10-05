@@ -1,3 +1,5 @@
+import {XMLHttpRequest} from 'XMLHttpRequest';
+import {ResponseIndicator} from './ResponseIndicator.js';
 export class Pinger{
     
     ping(externalResource){
@@ -9,11 +11,16 @@ export class Pinger{
         
         request.addEventListener("readystatechange",()=>{
             
-            if (request.readyState == 4) {
-                    responseIndicator.setPageSize(request.responseText.length);
-                    responseIndicator.setResponseCode(request.status);
+            let pageSize = 0;
+            
+            if (request.readyState == 4 && request.status >= 200 && request.status < 400) {
+                
+                pageSize = request.getResponseHeader('Content-Length');
                 
             }
+            
+            responseIndicator.setPageSize(pageSize);
+            responseIndicator.setResponseCode(request.status);
             
         })
         
@@ -22,6 +29,7 @@ export class Pinger{
         let accessTime = Date.now() - startTime;
         
         responseIndicator.setAccessTime(accessTime);
+        responseIndicator.setExternalResource(externalResource);
         
         return responseIndicator;
         

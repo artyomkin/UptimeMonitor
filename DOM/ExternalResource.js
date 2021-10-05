@@ -4,8 +4,4 @@ export class ExternalResource{
         this.URL = URL;
     }
     
-    foo(){
-        console.log("ext")
-    }
-    
 }
