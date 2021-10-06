@@ -1,9 +1,10 @@
 export class ResponseIndicator{
     
-    constructor(){
-        this.accessTime = 0;
-        this.pageSize = 0;
-        this.responseCode = 0;
+    constructor(accessTime = 0, pageSize = 0, responseCode = 0, externalResource = "-"){
+        this.accessTime = accessTime;
+        this.pageSize = pageSize;
+        this.responseCode = responseCode;
+        this.externalResource = externalResource;
     }
     
     setAccessTime(accessTime){
