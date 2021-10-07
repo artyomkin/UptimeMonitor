@@ -2,8 +2,8 @@ import pg from 'pg';
 
 export class ResponseIndicatorDAO{
 
-    constructor(cientConn){
-        this.cientConn = cientConn;
+    constructor(clientConn){
+        this.clientConn = clientConn;
     }
     
     create(responseIndicator){
@@ -70,11 +70,13 @@ export class ResponseIndicatorDAO{
             client.connect();
             client.query(query,(err,res)=>{
                 client.end();
-                if(err) reject("Execution failed");
+                if(err) reject(err);
                 else resolve(res);
             })
         });
     
     }
+    
+
     
 }

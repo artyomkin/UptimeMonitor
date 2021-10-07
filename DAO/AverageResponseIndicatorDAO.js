@@ -68,7 +68,7 @@ export class AverageResponseIndicatorDAO{
             client.connect();
             client.query(query,(err,res)=>{
                 client.end();
-                if(err) reject("Execution failed");
+                if(err) reject(err);
                 else resolve(res);
             })
         });

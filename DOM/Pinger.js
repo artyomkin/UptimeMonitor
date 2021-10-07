@@ -11,12 +11,15 @@ export class Pinger{
         
         request.addEventListener("readystatechange",()=>{
             
-            let pageSize = 0;
+            let pageSize = -1;
             
             if (request.readyState == 4 && request.status >= 200 && request.status < 400) {
                 
-                pageSize = request.getResponseHeader('Content-Length');
-                
+                pageSize = request.responseText.length;
+                console.log(request.getAllResponseHeaders());
+                console.log(request.status);
+                console.log(request.statusText);
+                //TODO - если response 300 - пингануть по location
             }
             
             responseIndicator.setPageSize(pageSize);

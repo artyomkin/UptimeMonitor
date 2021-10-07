@@ -4,10 +4,13 @@ import {AverageResponseIndicator} from './DOM/AverageResponseIndicator.js';
 import {ResponseIndicator} from './DOM/ResponseIndicator.js';
 import {Pinger} from './DOM/Pinger.js';
 import {ExternalResource} from './DOM/ExternalResource.js';
+import {Enum} from './DOM/Enum.js';
+import {ExternalResourceDAO} from './DAO/ExternalResourceDAO.js';
+import {ExternalResourceConfigManager} from './DAO/ExternalResourceConfigManager.js'
 import {XMLHttpRequest} from 'XMLHttpRequest';
 import pg from 'pg';
 import sleep from 'sleep';
-function main(){
+async function main(){
 
     
     const clientConn = {
@@ -17,20 +20,15 @@ function main(){
         password: 'oi9oityu',
         port: 5433,
     }
+    
+//    let enumStates = Enum({UNDEFINED: "undefined", AVAILABLE: "available", DEVIATION: "deviation", UNAVAILABLE: "unavailable"});
+//
+//    let extDAO = new ExternalResourceDAO(clientConn);
+//    
+    let extManager = new ExternalResourceConfigManager(clientConn);
+    console.log(extManager);
+    console.log(extManager.getExternalResources());
 
-    
-    let averageResponseIndicatorDAO = new AverageResponseIndicatorDAO(clientConn);
-    let responseIndicatorDAO = new ResponseIndicatorDAO(clientConn);
-    let averageResponseIndicator = new AverageResponseIndicator(111,222,new ExternalResource("http://www.amazon.com"));
-//    averageResponseIndicatorDAO.create(averageResponseIndicator).then(resolve=>{
-//        let responseIndicator = new ResponseIndicator(222,333,200,new ExternalResource("http://www.amazon.com"));
-//        responseIndicatorDAO.create(responseIndicator);
-//    });
-        let responseIndicator = new ResponseIndicator(222,333,200,new ExternalResource("http://www.amazon.com"));
-        responseIndicatorDAO.create(responseIndicator);
-    
-    
-    
 }
 
 main();

@@ -1,5 +1,5 @@
 ExternalResource:
   - 
-    URL: http://142.251.1.94
+    URL: 'http://amazon.ru'
   -
-    URL: https://zen.yandex.ru/media/world_marvel_dc/123
+    URL: 'https://yandex.ru'
