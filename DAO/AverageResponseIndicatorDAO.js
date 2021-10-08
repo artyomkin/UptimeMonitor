@@ -1,8 +1,9 @@
 import pg from 'pg';
+import {DataAccessObjectFacade} from './DataAccessObjectFacade.js';
 export class AverageResponseIndicatorDAO{
 
-    constructor(clientConn){
-        this.clientConn = clientConn;
+    constructor(dataAccessObjectFacade){
+        this.dataAccessObjectFacade = dataAccessObjectFacade;
     }
     
     create(averageResponseIndicator){
@@ -16,7 +17,7 @@ export class AverageResponseIndicatorDAO{
             values: [externalResourceURL, accessTime, pageSize]
         };
         
-        return this.#getPromiseResult(query);
+        return this.dataAccessObjectFacade.query(query);
         
         
     }
@@ -29,7 +30,7 @@ export class AverageResponseIndicatorDAO{
             values: [URL]
         };
         
-        return this.#getPromiseResult(query);
+        return this.dataAccessObjectFacade.query(query);
         
     }
     
@@ -45,7 +46,7 @@ export class AverageResponseIndicatorDAO{
             values: [accessTime, pageSize, oldURL, URL]
         };
         
-        return this.#getPromiseResult(query);
+        return this.dataAccessObjectFacade.query(query);
         
     }
     
@@ -57,22 +58,8 @@ export class AverageResponseIndicatorDAO{
             values: [URL]
         };
                 
-        return this.#getPromiseResult(query);
+        return this.dataAccessObjectFacade.query(query);
         
-    }
-    
-     #getPromiseResult(query){
-    
-        return new Promise((resolve, reject) => {
-            let client = new pg.Client(this.clientConn);
-            client.connect();
-            client.query(query,(err,res)=>{
-                client.end();
-                if(err) reject(err);
-                else resolve(res);
-            })
-        });
-    
     }
     
     

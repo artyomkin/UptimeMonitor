@@ -1,21 +1,50 @@
 import pg from 'pg';
+import {DataAccessObjectFacade} from './DataAccessObjectFacade.js';
 export class ExternalResourceDAO{
     
-    constructor(clientConn){
+    constructor(dataAccessObjectFacade){
         
-        this.clientConn = clientConn;
+        this.dataAccessObjectFacade = dataAccessObjectFacade;
         
     }
     
     create(externalResource){
-        
         let query = {
             name: "create external resource",
             text: "INSERT INTO external_resources (url, state) VALUES ($1,$2)",
             values: [externalResource.URL, externalResource.currentState.description]
         }
         
-        return this.#getPromiseResult(query);
+        return this.dataAccessObjectFacade.query(query);
+        
+    }
+    
+    createMany(externalResources){
+        
+        if(externalResources.length > 0){
+            
+            let queryText = "INSERT INTO external_resources (url, state) VALUES ($1,$2)";
+            let values = [];
+            externalResources.forEach((externalResource, index, array) => {
+                if(index < externalResources.length-1){
+                    queryText += ", ($" + (index * 2 + 3).toString() + ",$" + (index * 2 + 4).toString() + ")"
+                }
+                values.push(externalResource.URL);
+                values.push(externalResource.currentState.description);
+            })
+        
+            queryText += " ON CONFLICT (url) DO NOTHING";
+            
+            let query = {
+                name: "create many instances if it causes no conflict",
+                text: queryText,
+                values: values
+            }
+            
+            return this.dataAccessObjectFacade.query(query);
+            
+        }
+
         
     }
     
@@ -27,7 +56,27 @@ export class ExternalResourceDAO{
             values: [URL]
         }
         
-        return this.#getPromiseResult(query);
+        return this.dataAccessObjectFacade.query(query);
+        
+    }
+    
+    readManyByURLs(URLs){
+        
+            let queryText = "SELECT state FROM external_resources WHERE url = $1"
+            for (let i = 0; i<URLs.length-1; i++){
+                
+                queryText += " OR url = $" + (i+2).toString();
+
+            }
+            
+            let query = {
+                name: "select all from external resources by urls",
+                text: queryText,
+                values: URLs
+            }
+
+            return this.dataAccessObjectFacade.query(query);
+            
         
     }
     
@@ -39,7 +88,7 @@ export class ExternalResourceDAO{
             values: [externalResource.URL, externalResource.currentState.description, URL]
         }
         
-        return this.#getPromiseResult(query);
+        return this.dataAccessObjectFacade.query(query);
         
     }
     
@@ -51,21 +100,7 @@ export class ExternalResourceDAO{
             values: [URL]
         }
         
-        return this.#getPromiseResult(query);
-        
-    }
-    
-    #getPromiseResult(query){
-    
-        return new Promise((resolve, reject) => {
-            let client = new pg.Client(this.clientConn);
-            client.connect();
-            client.query(query,(err,res)=>{
-                client.end();
-                if(err) reject(err);
-                else resolve(res);
-            })
-        });
+        return this.dataAccessObjectFacade.query(query);
     
     }
     

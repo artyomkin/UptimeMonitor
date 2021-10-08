@@ -8,6 +8,7 @@ import {Enum} from './DOM/Enum.js';
 import {ExternalResourceDAO} from './DAO/ExternalResourceDAO.js';
 import {ExternalResourceConfigManager} from './DAO/ExternalResourceConfigManager.js'
 import {XMLHttpRequest} from 'XMLHttpRequest';
+import {DataAccessObjectFacade} from './DAO/DataAccessObjectFacade.js';
 import pg from 'pg';
 import sleep from 'sleep';
 async function main(){
@@ -21,14 +22,11 @@ async function main(){
         port: 5433,
     }
     
-//    let enumStates = Enum({UNDEFINED: "undefined", AVAILABLE: "available", DEVIATION: "deviation", UNAVAILABLE: "unavailable"});
-//
-//    let extDAO = new ExternalResourceDAO(clientConn);
-//    
-    let extManager = new ExternalResourceConfigManager(clientConn);
-    console.log(extManager);
-    console.log(extManager.getExternalResources());
-
+    let daoFacade = new DataAccessObjectFacade(clientConn);
+    let configManager = new ExternalResourceConfigManager(daoFacade);
+    console.log(await configManager.getExternalResources());
+    
+    //TODO дальше по алгоритму + не забыть переделать пингер
 }
 
 main();

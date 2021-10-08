@@ -1,5 +1,11 @@
 ExternalResource:
   - 
-    URL: 'http://amazon.ru'
+    URL: '444'
   -
-    URL: 'https://yandex.ru'
+    URL: '333'
+  -
+    URL: 'http://vasyan.com'
+  -
+    URL: 'http://vasyan2.com'
+  -
+    URL: ';flaksj;lsjfd'

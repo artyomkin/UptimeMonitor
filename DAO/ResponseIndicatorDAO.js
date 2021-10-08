@@ -2,8 +2,8 @@ import pg from 'pg';
 
 export class ResponseIndicatorDAO{
 
-    constructor(clientConn){
-        this.clientConn = clientConn;
+    constructor(dataAccessObjectFacade){
+        this.dataAccessObjectFacade = dataAccessObjectFacade;
     }
     
     create(responseIndicator){
@@ -12,13 +12,14 @@ export class ResponseIndicatorDAO{
         let pageSize = responseIndicator.pageSize;
         let externalResourceURL = responseIndicator.externalResource.URL;
         let responseCode = responseIndicator.responseCode;
+        
         let query = {
             name: "insert response indicator",
             text: "INSERT INTO response_indicators (url, access_time, page_size, response_code) VALUES($1,$2,$3,$4);",
             values: [externalResourceURL, accessTime, pageSize, responseCode]
         };
         
-        return this.#getPromiseResult(query);
+        return this.dataAccessObjectFacade.query(query);
         
     }
     
@@ -30,7 +31,7 @@ export class ResponseIndicatorDAO{
             values: [URL]
         };
         
-        return this.#getPromiseResult(query);
+        return this.dataAccessObjectFacade.query(query);
         
     }
     
@@ -47,7 +48,7 @@ export class ResponseIndicatorDAO{
             values: [accessTime, pageSize, responseCode, oldURL, URL]
         };
         
-        return this.#getPromiseResult(query);
+        return this.dataAccessObjectFacade.query(query);
         
     }
     
@@ -59,23 +60,10 @@ export class ResponseIndicatorDAO{
             values: [URL]
         };
                 
-        return this.#getPromiseResult(query);
+        return this.dataAccessObjectFacade.query(query);
         
     }
     
-    #getPromiseResult(query){
-    
-        return new Promise((resolve, reject) => {
-            let client = new pg.Client(this.clientConn);
-            client.connect();
-            client.query(query,(err,res)=>{
-                client.end();
-                if(err) reject(err);
-                else resolve(res);
-            })
-        });
-    
-    }
     
 
     
