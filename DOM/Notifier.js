@@ -1,10 +1,25 @@
+import * as child_process from 'child_process';
 export class Notifier{
     
-    notify(telegramChat, message){
+    constructor(telegramChats){
+        this.telegramChats = telegramChats;
+    }
+    
+    setTelegramChats(telegramChats){
         
-        let exec = require('child_process').exec;
+        this.telegramChats = telegramChats;
         
-        exec('curl -X POST  '+ telegramChat.webHook +' -d "message='+ message +'"');
+    }
+    
+    notify(message){
+        
+        if(message != undefined && message.length > 0){
+            let exec = child_process.exec;
+            this.telegramChats.forEach((telegramChat,index,array) => {
+                exec('curl -X POST '+ telegramChat.webHook +' -d "message='+ message +'"');
+            })
+        }
+
         
     }
     

@@ -62,7 +62,7 @@ export class ExternalResourceDAO{
     
     readManyByURLs(URLs){
         
-            let queryText = "SELECT state FROM external_resources WHERE url = $1"
+            let queryText = "SELECT * FROM external_resources WHERE url = $1"
             for (let i = 0; i<URLs.length-1; i++){
                 
                 queryText += " OR url = $" + (i+2).toString();
@@ -87,7 +87,7 @@ export class ExternalResourceDAO{
             text: "UPDATE external_resources SET url = $1, state = $2 WHERE url = $3",
             values: [externalResource.URL, externalResource.currentState.description, URL]
         }
-        
+                
         return this.dataAccessObjectFacade.query(query);
         
     }

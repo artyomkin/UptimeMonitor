@@ -1,0 +1,6 @@
+clientConn:
+ username: 'welllet'
+ host: 'localhost'
+ database: 'welllet'
+ password: 'oi9oityu'
+ port: 5433

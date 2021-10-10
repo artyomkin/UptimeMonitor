@@ -2,7 +2,14 @@ import {XMLHttpRequest} from 'XMLHttpRequest';
 import {ResponseIndicator} from './ResponseIndicator.js';
 export class Pinger{
     
+    constructor(){
+        
+        this.redirectURL = "";
+        
+    }
+    
     ping(externalResource){
+        
         let request = new XMLHttpRequest();
 
         request.open("GET",externalResource.URL,false);
@@ -11,15 +18,11 @@ export class Pinger{
         
         request.addEventListener("readystatechange",()=>{
             
-            let pageSize = -1;
-            
-            if (request.readyState == 4 && request.status >= 200 && request.status < 400) {
+            let pageSize = 0;
+            if (request.readyState == 4 && request.status >= 200 && request.status < 400){
                 
                 pageSize = request.responseText.length;
-                console.log(request.getAllResponseHeaders());
-                console.log(request.status);
-                console.log(request.statusText);
-                //TODO - если response 300 - пингануть по location
+                
             }
             
             responseIndicator.setPageSize(pageSize);
@@ -31,9 +34,15 @@ export class Pinger{
         request.send();
         let accessTime = Date.now() - startTime;
         
+        if(request.status >= 300 && request.status < 400){
+            
+            this.redirectURL = request.getResponseHeader("Location");
+            
+        }
+        
         responseIndicator.setAccessTime(accessTime);
         responseIndicator.setExternalResource(externalResource);
-        
+
         return responseIndicator;
         
     }

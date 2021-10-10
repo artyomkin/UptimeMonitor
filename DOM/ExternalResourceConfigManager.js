@@ -1,9 +1,9 @@
 import fs from 'fs';
 import pg from 'pg';
 import * as yaml from 'js-yaml';
-import {ExternalResource} from '../DOM/ExternalResource.js';
-import {DataAccessObjectFacade} from './DataAccessObjectFacade.js';
-import {ExternalResourceDAO} from './ExternalResourceDAO.js';
+import {ExternalResource} from './ExternalResource.js';
+import {DataAccessObjectFacade} from '../DAO/DataAccessObjectFacade.js';
+import {ExternalResourceDAO} from '../DAO/ExternalResourceDAO.js';
 export class ExternalResourceConfigManager{
     
     constructor(dataAccessObjectFacade){
@@ -49,7 +49,15 @@ export class ExternalResourceConfigManager{
             
             let URLs = this.externalResources.map(externalResource => externalResource.URL);
             
-            let states = await this.externalResourceDAO.readManyByURLs(URLs)
+            let queryResult = await this.externalResourceDAO.readManyByURLs(URLs);
+            
+            let states = [];
+            
+            for (let i = 0; i<queryResult.length; i++){
+                
+                states.push(queryResult[i].state);
+                
+            }
             
             this.#setExternalResourcesStatesLocally(states);
                 
