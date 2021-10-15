@@ -39,6 +39,10 @@ export class Reporter{
                     
                 }
                 
+            } else {
+                
+                report += externalResource.URL + " is available\n";
+                
             }
             
         })

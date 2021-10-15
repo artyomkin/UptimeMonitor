@@ -1,0 +1,28 @@
+{
+  "name": "uptimemonitor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "js-yaml": "^4.1.0",
+    "pg": "^8.7.1",
+    "pg-promise": "^10.11.0",
+    "sleep": "^6.3.0",
+    "xmlhttprequest": "^1.8.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node uptimeMonitor.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/artyomkin/UptimeMonitor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/artyomkin/UptimeMonitor/issues"
+  },
+  "homepage": "https://github.com/artyomkin/UptimeMonitor#readme"
+}

@@ -14,6 +14,8 @@ export class Notifier{
     notify(message){
         
         if(message != undefined && message.length > 0){
+            
+            console.log(message);
             let exec = child_process.exec;
             this.telegramChats.forEach((telegramChat,index,array) => {
                 exec('curl -X POST '+ telegramChat.webHook +' -d "message='+ message +'"');
